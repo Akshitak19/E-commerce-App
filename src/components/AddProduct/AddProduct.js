@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "../UI/Modal";
 
 import "./AddProduct.css";
+import AppContext from "../store/appcontext";
 
-function AddProduct({ showAddProduct, closeAddProduct, onAddProduct }) {
+function AddProduct() {
+  const {showAddProduct, closeAddProduct, handleAddProduct} = useContext(AppContext);
   const [productName, setProductName] = useState("");
 
   const handleProductNameChange = (event) => {
@@ -13,7 +15,7 @@ function AddProduct({ showAddProduct, closeAddProduct, onAddProduct }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (productName.trim().length === 0) return;
-    onAddProduct(productName);
+    handleAddProduct(productName);
     setProductName("");
   };
 
