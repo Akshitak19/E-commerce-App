@@ -1,15 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from "react";
 import productData from "../../data/products.json";
 import AppContext from './appcontext'
+import { set } from 'mongoose';
 
 const AppContextProvider = ({children}) => {
+   
   const [cartItems, setCartItems] = useState([]);
-   const [products, setProducts] = useState(productData);
- 
+   const [products, setProducts] = useState([]);
    const [showCart, setShowCart] = useState(false);
    const [showAddProduct, setShowAddProduct] = useState(false);
+   const [loading, setLoading] = useState(false);
  
+ useEffect(()=>{
+        const getProductsData=async()=>{
+            try{
+                setLoading(true);
+                const response = await fetch("https://ecommerce-app-practise-default-rtdb.firebaseio.com/products.json");
+                if(!response.ok){
+                    throw new Error("Failed to fetch products data");
+                }
+                const data = await response.json();
+                setProducts(data);
+                setLoading(false);
+            }
+            catch(err){
+                console.error(err.message);
+            }
+        }
+        getProductsData();
+    },[])
    const openCart = () => setShowCart(true);
    const closeCart = () => setShowCart(false);
  
@@ -63,6 +83,7 @@ const AppContextProvider = ({children}) => {
     cartItems,
     products,
     showCart,
+    loading,
     showAddProduct,
     openCart,  
     closeCart,

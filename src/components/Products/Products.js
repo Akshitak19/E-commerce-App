@@ -13,8 +13,10 @@ export function Product({ id, name, image, onAddToCart }) {
 }
 
 function Products() {
-  const {products, handleAddToCart}=useContext(AppContext);
+  const {products, handleAddToCart, loading}=useContext(AppContext);
   return (
+    <>
+    {loading && <div className="loading-indicator">Loading products...</div>}
     <div className="products-container">
       {products.map((product) => (
         <Product
@@ -26,6 +28,7 @@ function Products() {
         />
       ))}
     </div>
+    </>
   );
 }
 
